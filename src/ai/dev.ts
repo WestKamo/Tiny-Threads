@@ -5,3 +5,4 @@ config();
 import '@/ai/flows/ai-suggested-product-descriptions.ts';
 import '@/ai/flows/outfit-suggester.ts';
 import '@/ai/flows/product-chatbot.ts';
+import '@/ai/flows/sales-insights-generator.ts';
