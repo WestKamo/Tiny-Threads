@@ -3,7 +3,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Edit, LogOut, Package, Star, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -53,9 +52,7 @@ export default function ProfilePage() {
         );
     }
 
-    const getImageById = (id: string) => PlaceHolderImages.find((img) => img.id === id);
-
-    const getStatusVariant = (status: string | undefined) => {
+    const getStatusVariant = (status: string | undefined): "default" | "secondary" | "destructive" | "outline" => {
         switch (status) {
             case 'approved': return 'default';
             case 'pending': return 'secondary';
@@ -106,12 +103,11 @@ export default function ProfilePage() {
                             <Loader2 className="h-8 w-8 animate-spin text-primary" />
                         </div>
                     ) : userListedItems.length > 0 ? userListedItems.map(product => {
-                        const image = getImageById(product.imageId);
                         return (
                              <Card key={product.id}>
                                 <CardContent className="flex gap-4 p-4 items-center">
                                     <div className="relative h-20 w-20 rounded-md overflow-hidden">
-                                        {image && <Image src={image.imageUrl} alt={product.name} fill className="object-cover" data-ai-hint={image.imageHint} />}
+                                        <Image src={product.imageUrl} alt={product.name} fill className="object-cover" data-ai-hint={`${product.category} ${product.color}`} />
                                     </div>
                                     <div className="flex-1">
                                         <h3 className="font-semibold">{product.name}</h3>

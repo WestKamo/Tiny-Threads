@@ -25,6 +25,7 @@ export async function addProduct(productData: Omit<Product, 'id' | 'status' | 'c
         });
         revalidatePath('/');
         revalidatePath('/admin/approve');
+        revalidatePath('/profile');
         return { success: true };
     } catch (error) {
         console.error('Error adding product to Firestore:', error);

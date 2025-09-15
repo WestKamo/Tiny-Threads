@@ -2,10 +2,9 @@
 import { getProductById } from '@/lib/firestore-helper';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Heart, ShoppingBag } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import { ProductChatbot } from '@/components/product-chatbot';
 import { AddToCartButton } from '@/components/add-to-cart-button';
 
@@ -17,24 +16,20 @@ export default async function ProductPage({ params }: { params: { id: string } }
     notFound();
   }
 
-  const image = PlaceHolderImages.find((img) => img.id === product.imageId);
-
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
       <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
         
         <div className="space-y-4">
             <div className="relative aspect-square w-full rounded-lg overflow-hidden shadow-lg">
-                {image && (
-                    <Image
-                    src={image.imageUrl}
-                    alt={product.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    data-ai-hint={image.imageHint}
-                    />
-                )}
+                <Image
+                  src={product.imageUrl}
+                  alt={product.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  data-ai-hint={`${product.category} ${product.color}`}
+                />
             </div>
              {/* Future thumbnails could go here */}
         </div>

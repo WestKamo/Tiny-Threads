@@ -1,4 +1,3 @@
-
 'use client';
 
 import Image from 'next/image';
@@ -8,7 +7,6 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
 import { Heart } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Badge } from './ui/badge';
 import Link from 'next/link';
 import { AddToCartButton } from './add-to-cart-button';
@@ -19,22 +17,19 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const [isFavorited, setIsFavorited] = useState(false);
-  const image = PlaceHolderImages.find((img) => img.id === product.imageId);
 
   return (
     <Card className="flex flex-col h-full overflow-hidden transition-all duration-300 hover:shadow-lg group">
        <CardHeader className="p-0 relative">
         <Link href={`/product/${product.id}`} className="block aspect-square w-full relative">
-            {image && (
-                <Image
-                src={image.imageUrl}
-                alt={product.name}
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                data-ai-hint={image.imageHint}
-                />
-            )}
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              data-ai-hint={`${product.category} ${product.color}`}
+            />
         </Link>
         <Button
           size="icon"

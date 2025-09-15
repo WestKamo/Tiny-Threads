@@ -23,14 +23,17 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
-import { ImagePlus, Loader2, Wand2 } from 'lucide-react';
+import { ImagePlus, Loader2, Wand2, Upload } from 'lucide-react';
 import { ageGroups, genders, materials, productCategories, styles } from '@/lib/data';
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useRef } from 'react';
 import { getAIDescription, addProduct } from '@/app/sell/actions';
 import type { GenerateProductDescriptionInput } from '@/ai/flows/ai-suggested-product-descriptions';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/navigation';
+import { storage } from '@/lib/firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import Image from 'next/image';
 
 const formSchema = z.object({
   name: z.string().min(3, 'Product name must be at least 3 characters.'),
@@ -43,8 +46,13 @@ const formSchema = z.object({
   price: z.coerce.number().min(0, 'Price must be a positive number.'),
   description: z.string().min(10, 'Description must be at least 10 characters.'),
   additionalFeatures: z.string().optional(),
-  imageId: z.string().optional(), // We'll make this non-optional later
+  imageUrl: z.string().optional(),
+  imageFile: z.instanceof(File).optional(),
+}).refine(data => data.imageFile || data.imageUrl, {
+    message: "Product image is required.",
+    path: ["imageFile"],
 });
+
 
 export function AddProductForm() {
   const [isGenerating, startTransition] = useTransition();
@@ -52,6 +60,8 @@ export function AddProductForm() {
   const { toast } = useToast();
   const { user } = useAuth();
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -95,20 +105,51 @@ export function AddProductForm() {
     });
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      form.setValue('imageFile', file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!user) {
         toast({ title: "Authentication Error", description: "You must be logged in to sell an item.", variant: "destructive"});
         return;
     }
+     if (!values.imageFile) {
+        toast({ title: "Image Required", description: "Please upload an image for the product.", variant: "destructive"});
+        return;
+    }
 
     startSubmitTransition(async () => {
-        // A real implementation would get an imageId from an upload.
-        const imageId = `product-${Math.floor(Math.random() * 9) + 1}`;
+        let imageUrl = '';
+        try {
+            // Upload image to Firebase Storage
+            const imageRef = ref(storage, `images/${user.uid}/${Date.now()}_${values.imageFile?.name}`);
+            const snapshot = await uploadBytes(imageRef, values.imageFile as Blob);
+            imageUrl = await getDownloadURL(snapshot.ref);
+        } catch (error) {
+             toast({
+                title: "Image Upload Failed",
+                description: "Could not upload the product image. Please try again.",
+                variant: 'destructive',
+            });
+            return;
+        }
+
+        const { imageFile, ...productValues } = values;
+
         const productData = {
-            ...values,
+            ...productValues,
+            imageUrl,
             seller: user.displayName || user.email || 'Anonymous',
             sellerId: user.uid,
-            imageId: imageId,
         };
 
         const result = await addProduct(productData);
@@ -119,7 +160,8 @@ export function AddProductForm() {
                 description: "Your item is now pending approval from an administrator.",
             });
             form.reset();
-            router.push('/');
+            setImagePreview(null);
+            router.push('/profile');
         } else {
             toast({
                 title: "Submission Failed",
@@ -135,10 +177,38 @@ export function AddProductForm() {
       <CardContent className="p-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="w-full h-48 border-2 border-dashed rounded-lg flex flex-col items-center justify-center text-muted-foreground hover:bg-accent/50 transition-colors cursor-pointer">
-              <ImagePlus className="h-10 w-10 mb-2" />
-              <span className="font-medium">Upload Product Images</span>
-            </div>
+             <FormField
+              control={form.control}
+              name="imageFile"
+              render={({ field }) => (
+                <FormItem>
+                    <FormLabel>Product Image</FormLabel>
+                    <FormControl>
+                        <div 
+                            className="w-full h-48 border-2 border-dashed rounded-lg flex flex-col items-center justify-center text-muted-foreground hover:bg-accent/50 transition-colors cursor-pointer relative"
+                            onClick={() => fileInputRef.current?.click()}
+                        >
+                        {imagePreview ? (
+                            <Image src={imagePreview} alt="Product preview" fill className="object-cover rounded-md" />
+                        ) : (
+                            <>
+                                <ImagePlus className="h-10 w-10 mb-2" />
+                                <span className="font-medium">Click to Upload Image</span>
+                            </>
+                        )}
+                        <Input 
+                            type="file" 
+                            ref={fileInputRef} 
+                            className="hidden" 
+                            accept="image/*"
+                            onChange={handleImageChange}
+                        />
+                        </div>
+                    </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <FormField
               control={form.control}

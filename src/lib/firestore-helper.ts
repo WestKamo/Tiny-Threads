@@ -14,7 +14,7 @@ const toProduct = (doc: QueryDocumentSnapshot<DocumentData> | DocumentData): Pro
         ageGroup: data.ageGroup,
         gender: data.gender,
         price: data.price,
-        imageId: data.imageId,
+        imageUrl: data.imageUrl,
         seller: data.seller,
         status: data.status,
         description: data.description,

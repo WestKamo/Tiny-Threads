@@ -1,4 +1,3 @@
-import type { ImagePlaceholder } from './placeholder-images';
 import type { Timestamp } from 'firebase/firestore';
 
 export type Product = {
@@ -8,7 +7,7 @@ export type Product = {
   ageGroup: 'Newborn' | '0-3 Months' | '3-6 Months' | '6-12 Months' | 'Toddler';
   gender: 'Male' | 'Female' | 'Unisex';
   price: number;
-  imageId: string;
+  imageUrl: string;
   seller: string;
   description?: string;
   color?: string;
@@ -26,7 +25,7 @@ export type Slide = {
   subtitle: string;
   buttonText: string;
   buttonLink: string;
-  imageId: string;
+  imageUrl: string;
 };
 
 export type CartItem = {
