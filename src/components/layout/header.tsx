@@ -8,6 +8,7 @@ import { useCart } from '@/hooks/use-cart';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -17,7 +18,7 @@ const navLinks = [
 ];
 
 export function Header() {
-  const { cartCount, toggleCart } = useCart();
+  const { cartCount, toggleCart, justAdded } = useCart();
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [logoClickCount, setLogoClickCount] = useState(0);
   const router = useRouter();
@@ -123,12 +124,22 @@ export function Header() {
                 </Link>
               </Button>
              <Button variant="ghost" size="icon" className="relative" onClick={toggleCart}>
-              <ShoppingCart className="h-5 w-5" />
+              <motion.div key={cartCount} animate={{ scale: justAdded ? [1, 1.3, 1] : 1 }} transition={{ duration: 0.3 }}>
+                <ShoppingCart className="h-5 w-5" />
+              </motion.div>
+              <AnimatePresence>
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                <motion.span 
+                    className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    exit={{ scale: 0 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                >
                   {cartCount}
-                </span>
+                </motion.span>
               )}
+              </AnimatePresence>
               <span className="sr-only">Shopping Cart</span>
             </Button>
             {isLoggedIn ? (
