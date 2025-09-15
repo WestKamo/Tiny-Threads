@@ -15,9 +15,8 @@ import { auth } from '@/lib/firebase';
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '#categories', label: 'Categories' },
   { href: '/sell', label: 'Sell' },
-  { href: '#about', label: 'About Us' },
+  { href: '/about', label: 'About Us' },
 ];
 
 export function Header() {
@@ -53,7 +52,7 @@ export function Header() {
             </Link>
           </div>
           <nav className="flex items-center space-x-6 text-sm font-medium">
-            {navLinks.slice(0, 3).map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}

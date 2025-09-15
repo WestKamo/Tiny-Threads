@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/header';
 import { CartProvider } from '@/contexts/cart-context';
 import { CartSheet } from '@/components/cart-sheet';
 import { AuthProvider } from '@/contexts/auth-context';
+import { AnimatePresence } from 'framer-motion';
 
 export const metadata: Metadata = {
   title: 'Tiny Threads',
@@ -31,7 +32,9 @@ export default function RootLayout({
           <CartProvider>
             <div className="flex flex-col min-h-screen bg-background">
               <Header />
-              <main className="flex-1">{children}</main>
+              <main className="flex-1">
+                  {children}
+              </main>
             </div>
             <CartSheet />
             <Toaster />

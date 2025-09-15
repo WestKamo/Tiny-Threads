@@ -1,5 +1,6 @@
 import { CompleteTheOutfit } from '@/components/complete-the-outfit';
 import { HomeSlider } from '@/components/home-slider';
+import { PageWrapper } from '@/components/page-wrapper';
 import { ProductCard } from '@/components/product-card';
 import { ProductFilters } from '@/components/product-filters';
 import { getApprovedProducts } from '@/lib/firestore-helper';
@@ -8,7 +9,7 @@ export default async function Home() {
   const products = await getApprovedProducts();
 
   return (
-    <>
+    <PageWrapper>
       <HomeSlider />
       <section className="container mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-4 lg:gap-12">
@@ -28,6 +29,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-    </>
+    </PageWrapper>
   );
 }
