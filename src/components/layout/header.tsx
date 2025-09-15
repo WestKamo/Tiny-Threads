@@ -30,7 +30,7 @@ export function Header() {
   const handleLogoClick = () => {
     const newClickCount = logoClickCount + 1;
     setLogoClickCount(newClickCount);
-    if (newClickCount >= 4) {
+    if (newClickCount >= 5) {
       router.push('/admin/approve');
       setLogoClickCount(0);
     }

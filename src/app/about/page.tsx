@@ -2,13 +2,12 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { PageWrapper } from "@/components/page-wrapper"
-import { HeartHandshake, Leaf, Gem } from "lucide-react"
+import { HeartHandshake, Leaf, Gem, Linkedin, Github } from "lucide-react"
 import Link from "next/link"
 
 const teamMembers = [
-  { name: 'Alice Johnson', role: 'Founder & CEO', imageUrl: 'https://picsum.photos/seed/alice/200/200', dataAiHint: "person portrait" },
-  { name: 'Ben Carter', role: 'Lead Designer', imageUrl: 'https://picsum.photos/seed/ben/200/200', dataAiHint: "person portrait" },
-  { name: 'Chloe Davis', role: 'Marketing Head', imageUrl: 'https://picsum.photos/seed/chloe/200/200', dataAiHint: "person portrait" },
+  { name: 'Phindile Sandi', role: 'Founder & CEO', imageUrl: 'https://picsum.photos/seed/phindile/200/200', dataAiHint: "person portrait" },
+  { name: 'Morena Mabaso', role: 'Co-Founder', imageUrl: 'https://picsum.photos/seed/morena/200/200', dataAiHint: "person portrait" },
 ]
 
 const values = [
@@ -75,7 +74,7 @@ export default function AboutPage() {
         {/* --- Meet the Team Section --- */}
         <section className="my-16 md:my-24">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center mb-12">Meet the Team</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
             {teamMembers.map((member) => (
               <div key={member.name} className="text-center flex flex-col items-center">
                 <Avatar className="h-32 w-32 mb-4 shadow-md">
@@ -84,6 +83,10 @@ export default function AboutPage() {
                 </Avatar>
                 <h3 className="text-xl font-semibold">{member.name}</h3>
                 <p className="text-primary">{member.role}</p>
+                <div className="flex gap-4 mt-2">
+                    <Link href="#"><Linkedin className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors" /></Link>
+                    <Link href="#"><Github className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors" /></Link>
+                </div>
               </div>
             ))}
           </div>

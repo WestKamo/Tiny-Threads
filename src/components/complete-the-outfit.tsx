@@ -1,6 +1,7 @@
+
 'use client';
 
-import { WandSparkles, Loader2 } from 'lucide-react';
+import { WandSparkles, Loader2, Info } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import {
@@ -30,6 +31,7 @@ const formSchema = z.object({
 export function CompleteTheOutfit() {
   const [isGenerating, startTransition] = useTransition();
   const [suggestions, setSuggestions] = useState<SuggestOutfitOutput['suggestions'] | null>(null);
+   const [noResults, setNoResults] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,11 +43,13 @@ export function CompleteTheOutfit() {
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     setSuggestions(null);
+    setNoResults(false);
     startTransition(async () => {
       const result = await suggestOutfit(values);
-      if (result && result.suggestions) {
+      if (result && result.suggestions && result.suggestions.length > 0) {
         setSuggestions(result.suggestions);
       } else {
+        setNoResults(true);
         toast({
           title: 'No suggestions found',
           description: 'Could not find items to complete the outfit. Try different options.',
@@ -131,8 +135,7 @@ export function CompleteTheOutfit() {
               )}
             />
             <Button type="submit" className="w-full" disabled={isGenerating}>
-              {isGenerating && <Loader2 className="animate-spin" />}
-              Find My Outfit!
+              {isGenerating ? <Loader2 className="animate-spin" /> : "Find My Outfit!"}
             </Button>
           </form>
         </Form>
@@ -153,6 +156,14 @@ export function CompleteTheOutfit() {
                         <div className="h-2 bg-slate-200 rounded w-5/6"></div>
                     </div>
                 </div>
+            </div>
+        )}
+
+        {noResults && !isGenerating && (
+            <div className="mt-6 flex flex-col items-center text-center text-muted-foreground p-4 bg-accent/30 rounded-lg">
+                <Info className="h-6 w-6 mb-2"/>
+                <p className="text-sm font-medium">No outfits found!</p>
+                <p className="text-xs">Try selecting a different color or style for new suggestions.</p>
             </div>
         )}
 
