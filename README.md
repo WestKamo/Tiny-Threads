@@ -1,4 +1,4 @@
-# Firebase Studio
+# Tiny Threads
 
 This is a NextJS starter in Firebase Studio.
 
