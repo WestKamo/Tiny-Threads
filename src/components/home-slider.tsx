@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -25,7 +26,7 @@ export function HomeSlider() {
           className="w-full"
         >
           <CarouselContent>
-            {slides.map((slide) => {
+            {slides.map((slide, index) => {
               return (
                 <CarouselItem key={slide.id}>
                   <Card className="overflow-hidden border-0 shadow-none">
@@ -36,6 +37,7 @@ export function HomeSlider() {
                         fill
                         className="object-cover brightness-75"
                         data-ai-hint="baby clothes"
+                        priority={index === 0}
                       />
                       <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4 bg-black/20">
                         <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
