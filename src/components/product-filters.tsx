@@ -16,7 +16,7 @@ import { Slider } from './ui/slider';
 import { useState } from 'react';
 
 export function ProductFilters() {
-  const [priceRange, setPriceRange] = useState([0, 100]);
+  const [priceRange, setPriceRange] = useState([0, 1000]);
   return (
     <Card>
       <CardHeader>
@@ -78,12 +78,12 @@ export function ProductFilters() {
         <div className="space-y-2">
             <div className="flex justify-between items-center">
                 <Label>Price Range</Label>
-                <span className="text-sm font-medium">${priceRange[0]} - ${priceRange[1]}</span>
+                <span className="text-sm font-medium">R{priceRange[0]} - R{priceRange[1]}</span>
             </div>
             <Slider
-                defaultValue={[50]}
-                max={100}
-                step={1}
+                defaultValue={[500]}
+                max={1000}
+                step={10}
                 onValueChange={(value) => setPriceRange(value)}
             />
         </div>

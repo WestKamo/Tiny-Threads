@@ -32,7 +32,7 @@ export default function ApprovePage() {
                                 {image && <Image src={image.imageUrl} alt={product.name} fill className="object-cover" />}
                             </div>
                             <div>
-                                <p className="font-semibold">${product.price.toFixed(2)}</p>
+                                <p className="font-semibold">R{product.price.toFixed(2)}</p>
                                 <Badge variant="outline">{product.category}</Badge>
                                 <p className="text-sm text-muted-foreground mt-2">Awaiting Approval</p>
                             </div>

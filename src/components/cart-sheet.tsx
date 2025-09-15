@@ -52,7 +52,7 @@ export function CartSheet() {
                           Quantity: {item.quantity}
                         </p>
                         <p className="text-sm font-semibold mt-1">
-                          ${(item.product.price * item.quantity).toFixed(2)}
+                          R{(item.product.price * item.quantity).toFixed(2)}
                         </p>
                       </div>
                       <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.product.id)}>
@@ -68,7 +68,7 @@ export function CartSheet() {
                 <Separator />
                 <div className="flex justify-between font-bold text-lg">
                   <span>Subtotal</span>
-                  <span>${cartTotal.toFixed(2)}</span>
+                  <span>R{cartTotal.toFixed(2)}</span>
                 </div>
                 <Button className="w-full" size="lg">
                   Proceed to Checkout

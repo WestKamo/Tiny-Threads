@@ -186,7 +186,7 @@ export function AddProductForm() {
                   <FormItem>
                     <FormLabel>Price</FormLabel>
                     <FormControl>
-                      <Input type="number" placeholder="24.99" {...field} />
+                      <Input type="number" placeholder="249.99" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
