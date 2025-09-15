@@ -11,13 +11,34 @@ import { Badge } from "@/components/ui/badge";
 import { products } from "@/lib/data";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import Link from "next/link";
 
 
 export default function ApprovePage() {
   const getImageById = (id: string) => PlaceHolderImages.find((img) => img.id === id);
+  // In a real app, you'd check for admin authentication here
+  const isAdmin = true; 
+
+  if (!isAdmin) {
+      return (
+          <div className="container mx-auto px-4 py-8 md:py-12 text-center">
+                <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Access Denied</h1>
+                <p className="text-muted-foreground mb-8">You must be an administrator to view this page.</p>
+                <Button asChild>
+                    <Link href="/login">Login as Admin</Link>
+                </Button>
+            </div>
+      )
+  }
+
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-8">Approve Listings</h1>
+        <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Approve Listings</h1>
+            <Button asChild variant="outline">
+                <Link href="/admin/dashboard">View Dashboard</Link>
+            </Button>
+        </div>
         <div className="grid gap-6">
             {products.slice(0,3).map(product => {
                 const image = getImageById(product.imageId)

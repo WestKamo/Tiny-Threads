@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { Heart, Menu, ShoppingCart, User, X } from 'lucide-react';
+import { Heart, Menu, ShoppingCart, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { TeddyBear } from '@/components/icons';
 import { useCart } from '@/hooks/use-cart';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 const navLinks = [
@@ -21,6 +21,23 @@ export function Header() {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [logoClickCount, setLogoClickCount] = useState(0);
   const router = useRouter();
+  
+  // Simulate user login state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // This would be replaced by actual auth state management
+  useEffect(() => {
+    // A simple way to simulate login state changes for demonstration
+    const checkLogin = () => {
+        // In a real app, you might check localStorage, a cookie, or an auth context
+        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        setIsLoggedIn(loggedIn);
+    };
+    checkLogin();
+    window.addEventListener('storage', checkLogin);
+    return () => window.removeEventListener('storage', checkLogin);
+  }, []);
+
 
   const handleLogoClick = () => {
     const newClickCount = logoClickCount + 1;
@@ -30,6 +47,12 @@ export function Header() {
       setLogoClickCount(0);
     }
   };
+
+  const handleLogout = () => {
+      localStorage.removeItem('isLoggedIn');
+      setIsLoggedIn(false);
+      router.push('/');
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -42,7 +65,7 @@ export function Header() {
             </Link>
           </div>
           <nav className="flex items-center space-x-6 text-sm font-medium">
-            {navLinks.slice(0, 2).map((link) => (
+            {navLinks.slice(0, 3).map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -108,12 +131,27 @@ export function Header() {
               )}
               <span className="sr-only">Shopping Cart</span>
             </Button>
-            <Button variant="ghost" size="icon" asChild>
-              <Link href="/login">
-                <User className="h-5 w-5" />
-                <span className="sr-only">User Profile</span>
-              </Link>
-            </Button>
+            {isLoggedIn ? (
+                 <>
+                    <Button variant="ghost" size="icon" asChild>
+                        <Link href="/profile">
+                            <User className="h-5 w-5" />
+                            <span className="sr-only">User Profile</span>
+                        </Link>
+                    </Button>
+                    <Button variant="ghost" size="icon" onClick={handleLogout}>
+                        <LogOut className="h-5 w-5" />
+                        <span className="sr-only">Logout</span>
+                    </Button>
+                 </>
+            ) : (
+                <Button variant="ghost" size="icon" asChild>
+                <Link href="/login">
+                    <User className="h-5 w-5" />
+                    <span className="sr-only">Login</span>
+                </Link>
+                </Button>
+            )}
           </div>
         </div>
       </div>
