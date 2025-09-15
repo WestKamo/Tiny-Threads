@@ -7,7 +7,7 @@ export const slides: Slide[] = [
     subtitle: 'Check out the cutest and comfiest outfits for your little one.',
     buttonText: 'Shop Now',
     buttonLink: '#',
-    imageUrl: 'https://images.unsplash.com/photo-1604467795338-bf091268317a?q=80&w=1200&h=600&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=1200&h=600&fit=crop',
   },
   {
     id: '2',
@@ -15,7 +15,7 @@ export const slides: Slide[] = [
     subtitle: 'Up to 30% off on all summer collection items. Limited time only!',
     buttonText: 'Explore Deals',
     buttonLink: '#',
-    imageUrl: 'https://images.unsplash.com/photo-1595390757365-43a9b9a5da44?q=80&w=1200&h=600&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1559535332-db9971593356?q=80&w=1200&h=600&fit=crop',
   },
   {
     id: '3',
@@ -23,7 +23,7 @@ export const slides: Slide[] = [
     subtitle: 'Durable and adorable clothes for every adventure.',
     buttonText: 'Discover More',
     buttonLink: '#',
-    imageUrl: 'https://images.unsplash.com/photo-1546768292-fb12f6c92568?q=80&w=1200&h=600&fit=crop',
+    imageUrl: 'https://images.unsplash.com/photo-1620022412856-f25b65a5509b?q=80&w=1200&h=600&fit=crop',
   },
 ];
 
