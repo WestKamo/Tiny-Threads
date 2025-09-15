@@ -1,75 +1,76 @@
+
 {
   "placeholderImages": [
     {
       "id": "slider-1",
-      "description": "A baby smiling and wearing a cute outfit for a promotion.",
-      "imageUrl": "https://picsum.photos/seed/slider1/1200/600",
+      "description": "A smiling baby wearing a cute, soft-blue knitted outfit.",
+      "imageUrl": "https://images.unsplash.com/photo-1604467795338-bf091268317a?q=80&w=1200&h=600&fit=crop",
       "imageHint": "happy baby"
     },
     {
       "id": "slider-2",
-      "description": "A collection of colorful baby shoes.",
-      "imageUrl": "https://picsum.photos/seed/slider2/1200/600",
+      "description": "A collection of colorful, stylish baby shoes arranged neatly.",
+      "imageUrl": "https://images.unsplash.com/photo-1595390757365-43a9b9a5da44?q=80&w=1200&h=600&fit=crop",
       "imageHint": "baby shoes"
     },
     {
       "id": "slider-3",
-      "description": "A toddler playing with toys in a cozy room.",
-      "imageUrl": "https://picsum.photos/seed/slider3/1200/600",
+      "description": "A toddler playing happily with wooden toys in a bright, sunlit room.",
+      "imageUrl": "https://images.unsplash.com/photo-1546768292-fb12f6c92568?q=80&w=1200&h=600&fit=crop",
       "imageHint": "toddler playing"
     },
     {
       "id": "product-1",
-      "description": "A soft blue knitted onesie for a newborn.",
-      "imageUrl": "https://picsum.photos/seed/product1/600/600",
+      "description": "A soft blue knitted onesie for a newborn, laid out flat.",
+      "imageUrl": "https://images.unsplash.com/photo-1604176214539-bd42f4a13533?q=80&w=600&h=600&fit=crop",
       "imageHint": "baby onesie"
     },
     {
       "id": "product-2",
-      "description": "A cute pink dress with floral patterns for a baby girl.",
-      "imageUrl": "https://picsum.photos/seed/product2/600/600",
+      "description": "A cute pink dress with floral patterns for a baby girl, on a hanger.",
+      "imageUrl": "https://images.unsplash.com/photo-1592869598213-a0f58d047392?q=80&w=600&h=600&fit=crop",
       "imageHint": "baby dress"
     },
     {
       "id": "product-3",
-      "description": "A pair of tiny white sneakers for a baby.",
-      "imageUrl": "https://picsum.photos/seed/product3/600/600",
+      "description": "A pair of tiny, stylish white leather sneakers for a baby.",
+      "imageUrl": "https://images.unsplash.com/photo-1618521591526-b519b8e2358c?q=80&w=600&h=600&fit=crop",
       "imageHint": "baby shoes"
     },
     {
       "id": "product-4",
-      "description": "A yellow t-shirt with a teddy bear print.",
-      "imageUrl": "https://picsum.photos/seed/product4/600/600",
+      "description": "A bright yellow t-shirt with a cute teddy bear graphic.",
+      "imageUrl": "https://images.unsplash.com/photo-1634841924194-d2070c79313b?q=80&w=600&h=600&fit=crop",
       "imageHint": "baby shirt"
     },
     {
       "id": "product-5",
-      "description": "Comfortable grey sweatpants for a toddler.",
-      "imageUrl": "https://picsum.photos/seed/product5/600/600",
+      "description": "Comfortable grey cotton joggers for a toddler, folded neatly.",
+      "imageUrl": "https://images.unsplash.com/photo-1622295280945-5a5d2144704e?q=80&w=600&h=600&fit=crop",
       "imageHint": "baby pants"
     },
     {
       "id": "product-6",
-      "description": "A unisex green onesie with snap buttons.",
-      "imageUrl": "https://picsum.photos/seed/product6/600/600",
+      "description": "A unisex green onesie with a leaf pattern, perfect for any baby.",
+      "imageUrl": "https://images.unsplash.com/photo-1620808386222-3c4988e7b8f9?q=80&w=600&h=600&fit=crop",
       "imageHint": "baby onesie"
     },
     {
       "id": "product-7",
-      "description": "A formal blue shirt for a baby boy.",
-      "imageUrl": "https://picsum.photos/seed/product7/600/600",
+      "description": "A dapper blue button-down shirt for a stylish toddler boy.",
+      "imageUrl": "https://images.unsplash.com/photo-1578939659358-450917274052?q=80&w=600&h=600&fit=crop",
       "imageHint": "baby shirt"
     },
     {
       "id": "product-8",
-      "description": "A pair of soft brown leather baby shoes.",
-      "imageUrl": "https://picsum.photos/seed/product8/600/600",
+      "description": "A pair of soft, brown leather moccasins for a baby's first steps.",
+      "imageUrl": "https://images.unsplash.com/photo-1525992900388-608f1b2691e8?q=80&w=600&h=600&fit=crop",
       "imageHint": "baby shoes"
     },
     {
       "id": "product-9",
-      "description": "A warm, knitted baby dress for winter.",
-      "imageUrl": "https://picsum.photos/seed/product9/600/600",
+      "description": "A warm, cream-colored knitted baby dress for the winter season.",
+      "imageUrl": "https://images.unsplash.com/photo-1610996843003-b1d55642b58d?q=80&w=600&h=600&fit=crop",
       "imageHint": "baby dress"
     }
   ]
