@@ -24,7 +24,7 @@ export default function LoginPage() {
     // In a real app, you would validate credentials here
     localStorage.setItem('isLoggedIn', 'true');
     window.dispatchEvent(new Event('storage')); // Notify header to update
-    router.push('/profile');
+    router.push('/role-selection');
   };
 
   return (
