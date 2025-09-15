@@ -26,9 +26,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ImagePlus, Loader2, Wand2 } from 'lucide-react';
 import { ageGroups, genders, materials, productCategories, styles } from '@/lib/data';
 import { useState, useTransition } from 'react';
-import { getAIDescription } from '@/app/sell/actions';
+import { getAIDescription, addProduct } from '@/app/sell/actions';
 import type { GenerateProductDescriptionInput } from '@/ai/flows/ai-suggested-product-descriptions';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/use-auth';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   name: z.string().min(3, 'Product name must be at least 3 characters.'),
@@ -41,11 +43,15 @@ const formSchema = z.object({
   price: z.coerce.number().min(0, 'Price must be a positive number.'),
   description: z.string().min(10, 'Description must be at least 10 characters.'),
   additionalFeatures: z.string().optional(),
+  imageId: z.string().optional(), // We'll make this non-optional later
 });
 
 export function AddProductForm() {
   const [isGenerating, startTransition] = useTransition();
+  const [isSubmitting, startSubmitTransition] = useTransition();
   const { toast } = useToast();
+  const { user } = useAuth();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -60,7 +66,7 @@ export function AddProductForm() {
 
   const handleGenerateDescription = () => {
     const values = form.getValues();
-    const { name, category, ageGroup, gender, material, color, style, additionalFeatures } = values;
+    const { name, category, ageGroup, gender, material, color, style } = values;
 
     if (!name || !category || !ageGroup || !gender || !material || !color || !style) {
       toast({
@@ -90,10 +96,37 @@ export function AddProductForm() {
   };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    toast({
-        title: "Product Submitted!",
-        description: "Your item has been listed for sale (mock).",
+    if (!user) {
+        toast({ title: "Authentication Error", description: "You must be logged in to sell an item.", variant: "destructive"});
+        return;
+    }
+
+    startSubmitTransition(async () => {
+        // A real implementation would get an imageId from an upload.
+        const imageId = `product-${Math.floor(Math.random() * 9) + 1}`;
+        const productData = {
+            ...values,
+            seller: user.displayName || user.email || 'Anonymous',
+            sellerId: user.uid,
+            imageId: imageId,
+        };
+
+        const result = await addProduct(productData);
+
+        if (result.success) {
+            toast({
+                title: "Product Submitted!",
+                description: "Your item is now pending approval from an administrator.",
+            });
+            form.reset();
+            router.push('/');
+        } else {
+            toast({
+                title: "Submission Failed",
+                description: result.error,
+                variant: 'destructive',
+            });
+        }
     });
   }
 
@@ -291,7 +324,8 @@ export function AddProductForm() {
               )}
             />
             
-            <Button type="submit" size="lg" className="w-full">
+            <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               List Item for Sale
             </Button>
           </form>

@@ -1,9 +1,11 @@
 import { HomeSlider } from '@/components/home-slider';
 import { ProductCard } from '@/components/product-card';
 import { ProductFilters } from '@/components/product-filters';
-import { products } from '@/lib/data';
+import { getApprovedProducts } from '@/lib/firestore-helper';
 
-export default function Home() {
+export default async function Home() {
+  const products = await getApprovedProducts();
+
   return (
     <>
       <HomeSlider />

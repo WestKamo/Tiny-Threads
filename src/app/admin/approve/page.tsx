@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button"
+import { getPendingProducts } from "@/lib/firestore-helper";
+import { ApproveActions } from "./approve-actions";
 import {
   Card,
   CardContent,
@@ -8,28 +9,15 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge";
-import { products } from "@/lib/data";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 
-export default function ApprovePage() {
+export default async function ApprovePage() {
+  const pendingProducts = await getPendingProducts();
   const getImageById = (id: string) => PlaceHolderImages.find((img) => img.id === id);
-  // In a real app, you'd check for admin authentication here
-  const isAdmin = true; 
-
-  if (!isAdmin) {
-      return (
-          <div className="container mx-auto px-4 py-8 md:py-12 text-center">
-                <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Access Denied</h1>
-                <p className="text-muted-foreground mb-8">You must be an administrator to view this page.</p>
-                <Button asChild>
-                    <Link href="/login">Login as Admin</Link>
-                </Button>
-            </div>
-      )
-  }
 
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
@@ -40,8 +28,8 @@ export default function ApprovePage() {
             </Button>
         </div>
         <div className="grid gap-6">
-            {products.slice(0,3).map(product => {
-                const image = getImageById(product.imageId)
+            {pendingProducts.length > 0 ? pendingProducts.map(product => {
+                const image = getImageById(product.imageId);
                 return (
                     <Card key={product.id}>
                         <CardHeader>
@@ -59,13 +47,21 @@ export default function ApprovePage() {
                             </div>
                         </CardContent>
                         <CardFooter className="flex gap-2">
-                            <Button>Approve</Button>
-                            <Button variant="destructive">Reject</Button>
+                           <ApproveActions productId={product.id} />
                         </CardFooter>
                     </Card>
                 )
-            })}
+            })
+            : (
+                <Card>
+                    <CardContent className="p-8 text-center">
+                        <p className="text-lg text-muted-foreground">No pending products to approve.</p>
+                    </CardContent>
+                </Card>
+            )
+        }
         </div>
     </div>
   )
 }
+

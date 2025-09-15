@@ -1,4 +1,5 @@
 import type { ImagePlaceholder } from './placeholder-images';
+import type { Timestamp } from 'firebase/firestore';
 
 export type Product = {
   id: string;
@@ -9,6 +10,14 @@ export type Product = {
   price: number;
   imageId: string;
   seller: string;
+  description?: string;
+  color?: string;
+  style?: string;
+  material?: string;
+  additionalFeatures?: string;
+  status?: 'pending' | 'approved' | 'rejected';
+  createdAt?: Timestamp;
+  sellerId?: string;
 };
 
 export type Slide = {
