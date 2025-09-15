@@ -1,3 +1,76 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "slider-1",
+      "description": "A baby smiling and wearing a cute outfit for a promotion.",
+      "imageUrl": "https://picsum.photos/seed/slider1/1200/600",
+      "imageHint": "happy baby"
+    },
+    {
+      "id": "slider-2",
+      "description": "A collection of colorful baby shoes.",
+      "imageUrl": "https://picsum.photos/seed/slider2/1200/600",
+      "imageHint": "baby shoes"
+    },
+    {
+      "id": "slider-3",
+      "description": "A toddler playing with toys in a cozy room.",
+      "imageUrl": "https://picsum.photos/seed/slider3/1200/600",
+      "imageHint": "toddler playing"
+    },
+    {
+      "id": "product-1",
+      "description": "A soft blue knitted onesie for a newborn.",
+      "imageUrl": "https://picsum.photos/seed/product1/600/600",
+      "imageHint": "baby onesie"
+    },
+    {
+      "id": "product-2",
+      "description": "A cute pink dress with floral patterns for a baby girl.",
+      "imageUrl": "https://picsum.photos/seed/product2/600/600",
+      "imageHint": "baby dress"
+    },
+    {
+      "id": "product-3",
+      "description": "A pair of tiny white sneakers for a baby.",
+      "imageUrl": "https://picsum.photos/seed/product3/600/600",
+      "imageHint": "baby shoes"
+    },
+    {
+      "id": "product-4",
+      "description": "A yellow t-shirt with a teddy bear print.",
+      "imageUrl": "https://picsum.photos/seed/product4/600/600",
+      "imageHint": "baby shirt"
+    },
+    {
+      "id": "product-5",
+      "description": "Comfortable grey sweatpants for a toddler.",
+      "imageUrl": "https://picsum.photos/seed/product5/600/600",
+      "imageHint": "baby pants"
+    },
+    {
+      "id": "product-6",
+      "description": "A unisex green onesie with snap buttons.",
+      "imageUrl": "https://picsum.photos/seed/product6/600/600",
+      "imageHint": "baby onesie"
+    },
+    {
+      "id": "product-7",
+      "description": "A formal blue shirt for a baby boy.",
+      "imageUrl": "https://picsum.photos/seed/product7/600/600",
+      "imageHint": "baby shirt"
+    },
+    {
+      "id": "product-8",
+      "description": "A pair of soft brown leather baby shoes.",
+      "imageUrl": "https://picsum.photos/seed/product8/600/600",
+      "imageHint": "baby shoes"
+    },
+    {
+      "id": "product-9",
+      "description": "A warm, knitted baby dress for winter.",
+      "imageUrl": "https://picsum.photos/seed/product9/600/600",
+      "imageHint": "baby dress"
+    }
+  ]
 }
