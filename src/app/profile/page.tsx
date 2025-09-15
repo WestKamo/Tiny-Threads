@@ -3,9 +3,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { products } from "@/lib/data";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Edit, LogOut, Package, Star } from "lucide-react";
+import { Edit, LogOut, Package, Star, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -13,16 +12,33 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
+import { getProductsBySeller } from "@/lib/firestore-helper";
+import type { Product } from "@/lib/types";
+import { Badge } from "@/components/ui/badge";
 
 export default function ProfilePage() {
     const router = useRouter();
     const { user, loading } = useAuth();
+    const [userListedItems, setUserListedItems] = useState<Product[]>([]);
+    const [isFetchingListings, setIsFetchingListings] = useState(true);
 
     useEffect(() => {
         if (!loading && !user) {
             router.push('/login');
         }
     }, [user, loading, router]);
+
+     useEffect(() => {
+        if (user) {
+            const fetchListings = async () => {
+                setIsFetchingListings(true);
+                const products = await getProductsBySeller(user.uid);
+                setUserListedItems(products);
+                setIsFetchingListings(false);
+            };
+            fetchListings();
+        }
+    }, [user]);
 
     const handleLogout = async () => {
         await signOut(auth);
@@ -37,8 +53,16 @@ export default function ProfilePage() {
         );
     }
 
-    const userListedItems = products.slice(0, 2);
     const getImageById = (id: string) => PlaceHolderImages.find((img) => img.id === id);
+
+    const getStatusVariant = (status: string | undefined) => {
+        switch (status) {
+            case 'approved': return 'default';
+            case 'pending': return 'secondary';
+            case 'rejected': return 'destructive';
+            default: return 'outline';
+        }
+    }
 
 
   return (
@@ -51,8 +75,8 @@ export default function ProfilePage() {
                             <AvatarImage src={user.photoURL || "https://picsum.photos/seed/user-avatar/200/200"} alt={user.displayName || 'User'} data-ai-hint="person portrait" />
                             <AvatarFallback>{user.displayName?.charAt(0) || user.email?.charAt(0).toUpperCase()}</AvatarFallback>
                         </Avatar>
-                        <CardTitle>{user.displayName || 'Alex Doe'}</CardTitle>
-                        <CardDescription>Joined in {new Date(user.metadata.creationTime!).getFullYear()}</CardDescription>
+                        <CardTitle>{user.displayName || user.email}</CardTitle>
+                        <CardDescription>Joined in {user.metadata.creationTime ? new Date(user.metadata.creationTime).getFullYear() : 'this year'}</CardDescription>
                          <div className="flex items-center gap-1 text-yellow-500 pt-2">
                             <Star className="h-5 w-5 fill-current" />
                             <Star className="h-5 w-5 fill-current" />
@@ -77,7 +101,11 @@ export default function ProfilePage() {
             <main className="flex-1">
                  <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-8">Your Listings</h1>
                  <div className="grid gap-6">
-                    {userListedItems.length > 0 ? userListedItems.map(product => {
+                    {isFetchingListings ? (
+                        <div className="flex items-center justify-center py-16">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                    ) : userListedItems.length > 0 ? userListedItems.map(product => {
                         const image = getImageById(product.imageId);
                         return (
                              <Card key={product.id}>
@@ -88,7 +116,7 @@ export default function ProfilePage() {
                                     <div className="flex-1">
                                         <h3 className="font-semibold">{product.name}</h3>
                                         <p className="font-semibold text-lg">R{product.price.toFixed(2)}</p>
-                                        <p className="text-sm text-muted-foreground">Status: <span className="text-green-600 font-medium">Active</span></p>
+                                        <Badge variant={getStatusVariant(product.status)} className="capitalize">{product.status || 'Unknown'}</Badge>
                                     </div>
                                     <Button variant="outline" size="sm">Edit Listing</Button>
                                 </CardContent>

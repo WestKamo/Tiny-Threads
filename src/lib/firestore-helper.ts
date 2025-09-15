@@ -18,6 +18,7 @@ const toProduct = (doc: QueryDocumentSnapshot<DocumentData, DocumentData>): Prod
         status: data.status,
         description: data.description,
         createdAt: data.createdAt,
+        sellerId: data.sellerId,
     } as Product;
 }
 
@@ -30,6 +31,12 @@ export async function getApprovedProducts(): Promise<Product[]> {
 
 export async function getPendingProducts(): Promise<Product[]> {
     const q = query(collection(db, "products"), where("status", "==", "pending"));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(toProduct);
+}
+
+export async function getProductsBySeller(sellerId: string): Promise<Product[]> {
+    const q = query(collection(db, "products"), where("sellerId", "==", sellerId));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(toProduct);
 }
