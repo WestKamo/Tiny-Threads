@@ -1,14 +1,17 @@
 'use client';
 
 import Link from 'next/link';
-import { Heart, Menu, ShoppingCart, User, LogOut } from 'lucide-react';
+import { Heart, Menu, ShoppingCart, User, LogOut, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { TeddyBear } from '@/components/icons';
 import { useCart } from '@/hooks/use-cart';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '@/hooks/use-auth';
+import { signOut } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -22,22 +25,7 @@ export function Header() {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [logoClickCount, setLogoClickCount] = useState(0);
   const router = useRouter();
-  
-  // Simulate user login state
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // This would be replaced by actual auth state management
-  useEffect(() => {
-    // A simple way to simulate login state changes for demonstration
-    const checkLogin = () => {
-        // In a real app, you might check localStorage, a cookie, or an auth context
-        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        setIsLoggedIn(loggedIn);
-    };
-    checkLogin();
-    window.addEventListener('storage', checkLogin);
-    return () => window.removeEventListener('storage', checkLogin);
-  }, []);
+  const { user, loading } = useAuth();
 
 
   const handleLogoClick = () => {
@@ -49,9 +37,8 @@ export function Header() {
     }
   };
 
-  const handleLogout = () => {
-      localStorage.removeItem('isLoggedIn');
-      setIsLoggedIn(false);
+  const handleLogout = async () => {
+      await signOut(auth);
       router.push('/');
   }
 
@@ -142,7 +129,9 @@ export function Header() {
               </AnimatePresence>
               <span className="sr-only">Shopping Cart</span>
             </Button>
-            {isLoggedIn ? (
+            {loading ? (
+              <Loader2 className="h-5 w-5 animate-spin mx-2" />
+            ) : user ? (
                  <>
                     <Button variant="ghost" size="icon" asChild>
                         <Link href="/profile">

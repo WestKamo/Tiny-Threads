@@ -1,4 +1,3 @@
-// src/app/profile/page.tsx
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -11,29 +10,32 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/hooks/use-auth";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 export default function ProfilePage() {
     const router = useRouter();
-    const [isMounted, setIsMounted] = useState(false);
+    const { user, loading } = useAuth();
 
     useEffect(() => {
-        setIsMounted(true);
-        // Redirect if not logged in (client-side check)
-        if (localStorage.getItem('isLoggedIn') !== 'true') {
+        if (!loading && !user) {
             router.push('/login');
         }
-    }, [router]);
+    }, [user, loading, router]);
 
-    const handleLogout = () => {
-        localStorage.removeItem('isLoggedIn');
-        window.dispatchEvent(new Event('storage')); // Notify header to update
+    const handleLogout = async () => {
+        await signOut(auth);
         router.push('/');
     }
 
-    if (!isMounted) {
-        return null; // or a loading spinner
+    if (loading || !user) {
+        return (
+            <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
+                <Loader2 className="h-16 w-16 animate-spin text-primary" />
+            </div>
+        );
     }
-
 
     const userListedItems = products.slice(0, 2);
     const getImageById = (id: string) => PlaceHolderImages.find((img) => img.id === id);
@@ -46,11 +48,11 @@ export default function ProfilePage() {
                 <Card>
                     <CardHeader className="items-center text-center">
                         <Avatar className="h-24 w-24 mb-4">
-                            <AvatarImage src="https://picsum.photos/seed/user-avatar/200/200" alt="User Name" data-ai-hint="person portrait" />
-                            <AvatarFallback>U</AvatarFallback>
+                            <AvatarImage src={user.photoURL || "https://picsum.photos/seed/user-avatar/200/200"} alt={user.displayName || 'User'} data-ai-hint="person portrait" />
+                            <AvatarFallback>{user.displayName?.charAt(0) || user.email?.charAt(0).toUpperCase()}</AvatarFallback>
                         </Avatar>
-                        <CardTitle>Alex Doe</CardTitle>
-                        <CardDescription>Joined in 2024</CardDescription>
+                        <CardTitle>{user.displayName || 'Alex Doe'}</CardTitle>
+                        <CardDescription>Joined in {new Date(user.metadata.creationTime!).getFullYear()}</CardDescription>
                          <div className="flex items-center gap-1 text-yellow-500 pt-2">
                             <Star className="h-5 w-5 fill-current" />
                             <Star className="h-5 w-5 fill-current" />

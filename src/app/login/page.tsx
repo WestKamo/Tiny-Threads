@@ -15,16 +15,39 @@ import { TeddyBear } from "@/components/icons"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
+import { useState } from "react"
+import { auth } from "@/lib/firebase"
+import { signInWithEmailAndPassword } from "firebase/auth"
+import { useToast } from "@/hooks/use-toast"
+import { Loader2 } from "lucide-react"
 
 export default function LoginPage() {
   const router = useRouter();
+  const { toast } = useToast();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, you would validate credentials here
-    localStorage.setItem('isLoggedIn', 'true');
-    window.dispatchEvent(new Event('storage')); // Notify header to update
-    router.push('/role-selection');
+    setIsLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      toast({
+        title: 'Login Successful!',
+        description: "Welcome back!",
+      });
+      router.push('/role-selection');
+    } catch (error: any) {
+      console.error("Login Error:", error);
+      toast({
+        title: 'Login Failed',
+        description: error.message || 'Please check your credentials and try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -65,6 +88,8 @@ export default function LoginPage() {
                       type="email"
                       placeholder="m@example.com"
                       required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       />
                   </div>
                   <div className="grid gap-2">
@@ -77,12 +102,21 @@ export default function LoginPage() {
                           Forgot your password?
                       </Link>
                       </div>
-                      <Input id="password" type="password" required />
+                      <Input 
+                        id="password" 
+                        type="password" 
+                        required 
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
                   </div>
               </CardContent>
               <CardFooter className="flex flex-col">
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full">
-                    <Button className="w-full">Sign in</Button>
+                    <Button className="w-full" disabled={isLoading}>
+                      {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                      Sign in
+                    </Button>
                   </motion.div>
                   <div className="mt-4 text-center text-sm">
                   Don&apos;t have an account?{" "}

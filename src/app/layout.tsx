@@ -4,6 +4,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { Header } from '@/components/layout/header';
 import { CartProvider } from '@/contexts/cart-context';
 import { CartSheet } from '@/components/cart-sheet';
+import { AuthProvider } from '@/contexts/auth-context';
 
 export const metadata: Metadata = {
   title: 'Tiny Threads',
@@ -26,14 +27,16 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <CartProvider>
-          <div className="flex flex-col min-h-screen bg-background">
-            <Header />
-            <main className="flex-1">{children}</main>
-          </div>
-          <CartSheet />
-          <Toaster />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <div className="flex flex-col min-h-screen bg-background">
+              <Header />
+              <main className="flex-1">{children}</main>
+            </div>
+            <CartSheet />
+            <Toaster />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );
