@@ -5,7 +5,7 @@ import { Heart, Menu, ShoppingCart, User, LogOut, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { TeddyBear } from '@/components/icons';
 import { useCart } from '@/hooks/use-cart';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -72,14 +72,19 @@ export function Header() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left">
-            <div className="flex flex-col h-full">
-              <div className="flex items-center justify-between border-b pb-4">
-                 <Link href="/" className="flex items-center space-x-2" onClick={() => setMenuOpen(false)}>
-                  <TeddyBear className="h-6 w-6 text-primary-foreground fill-primary" />
-                  <span className="font-bold">Tiny Threads</span>
-                </Link>
-              </div>
-              <nav className="flex flex-col gap-4 mt-6">
+             <SheetHeader>
+                <SheetTitle asChild>
+                    <Link href="/" className="flex items-center space-x-2" onClick={() => setMenuOpen(false)}>
+                        <TeddyBear className="h-6 w-6 text-primary-foreground fill-primary" />
+                        <span className="font-bold">Tiny Threads</span>
+                    </Link>
+                </SheetTitle>
+                <SheetDescription className="sr-only">
+                    Mobile navigation menu for Tiny Threads.
+                </SheetDescription>
+            </SheetHeader>
+            <div className="flex flex-col h-full mt-6">
+              <nav className="flex flex-col gap-4">
                 {navLinks.map((link) => (
                    <Link
                     key={link.href}

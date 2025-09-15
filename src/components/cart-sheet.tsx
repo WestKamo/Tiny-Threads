@@ -8,6 +8,7 @@ import {
   SheetTitle,
   SheetFooter,
   SheetClose,
+  SheetDescription,
 } from '@/components/ui/sheet';
 import { useCart } from '@/hooks/use-cart';
 import Image from 'next/image';
@@ -23,6 +24,9 @@ export function CartSheet() {
       <SheetContent className="flex flex-col">
         <SheetHeader>
           <SheetTitle>Shopping Cart ({cartCount})</SheetTitle>
+          <SheetDescription>
+            Review the items in your cart. You can proceed to checkout or continue shopping.
+          </SheetDescription>
         </SheetHeader>
         {cartItems.length > 0 ? (
           <>
